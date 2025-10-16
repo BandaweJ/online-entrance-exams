@@ -1,0 +1,372 @@
+### School Entrance Exam System API Examples
+### Base URL: http://localhost:3000/api
+
+### Authentication
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@school.com",
+  "password": "admin123"
+}
+
+### Register new admin
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "newadmin@school.com",
+  "password": "password123",
+  "firstName": "New",
+  "lastName": "Admin"
+}
+
+### Get current user profile
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer {{token}}
+
+### Change password
+POST {{baseUrl}}/auth/change-password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "currentPassword": "oldpassword",
+  "newPassword": "newpassword"
+}
+
+### Exam Management
+
+### Get all exams
+GET {{baseUrl}}/exams
+Authorization: Bearer {{token}}
+
+### Get active exams
+GET {{baseUrl}}/exams/active
+Authorization: Bearer {{token}}
+
+### Create new exam
+POST {{baseUrl}}/exams
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Mathematics Entrance Exam 2024",
+  "description": "Comprehensive mathematics exam for school entrance",
+  "year": 2024,
+  "examDate": "2024-06-15T09:00:00Z",
+  "durationMinutes": 120
+}
+
+### Get specific exam
+GET {{baseUrl}}/exams/{{examId}}
+Authorization: Bearer {{token}}
+
+### Update exam
+PATCH {{baseUrl}}/exams/{{examId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Updated Mathematics Entrance Exam 2024",
+  "durationMinutes": 150
+}
+
+### Publish exam
+PATCH {{baseUrl}}/exams/{{examId}}/publish
+Authorization: Bearer {{token}}
+
+### Close exam
+PATCH {{baseUrl}}/exams/{{examId}}/close
+Authorization: Bearer {{token}}
+
+### Delete exam
+DELETE {{baseUrl}}/exams/{{examId}}
+Authorization: Bearer {{token}}
+
+### Section Management
+
+### Get sections for exam
+GET {{baseUrl}}/exams/{{examId}}/sections
+Authorization: Bearer {{token}}
+
+### Create section
+POST {{baseUrl}}/exams/{{examId}}/sections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Algebra",
+  "description": "Basic algebraic concepts",
+  "order": 1
+}
+
+### Update section
+PATCH {{baseUrl}}/exams/sections/{{sectionId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Advanced Algebra",
+  "order": 1
+}
+
+### Delete section
+DELETE {{baseUrl}}/exams/sections/{{sectionId}}
+Authorization: Bearer {{token}}
+
+### Question Management
+
+### Get questions for section
+GET {{baseUrl}}/sections/{{sectionId}}/questions
+Authorization: Bearer {{token}}
+
+### Create multiple choice question
+POST {{baseUrl}}/sections/{{sectionId}}/questions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "questionText": "What is the value of x in the equation 2x + 5 = 13?",
+  "type": "multiple_choice",
+  "options": ["3", "4", "5", "6"],
+  "correctAnswer": "4",
+  "marks": 2,
+  "order": 1,
+  "explanation": "Solve: 2x + 5 = 13, 2x = 8, x = 4"
+}
+
+### Create true/false question
+POST {{baseUrl}}/sections/{{sectionId}}/questions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "questionText": "The square root of 16 is 4.",
+  "type": "true_false",
+  "correctAnswer": "true",
+  "marks": 1,
+  "order": 2
+}
+
+### Create short answer question
+POST {{baseUrl}}/sections/{{sectionId}}/questions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "questionText": "What is the derivative of x²?",
+  "type": "short_answer",
+  "correctAnswer": "2x",
+  "marks": 3,
+  "order": 3
+}
+
+### Create essay question
+POST {{baseUrl}}/sections/{{sectionId}}/questions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "questionText": "Explain the concept of limits in calculus with examples.",
+  "type": "essay",
+  "correctAnswer": "A limit is the value that a function approaches as the input approaches some value...",
+  "marks": 10,
+  "order": 4,
+  "explanation": "Look for clear explanation with mathematical examples"
+}
+
+### Update question
+PATCH {{baseUrl}}/questions/{{questionId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "questionText": "Updated question text",
+  "marks": 5
+}
+
+### Duplicate question
+POST {{baseUrl}}/questions/{{questionId}}/duplicate
+Authorization: Bearer {{token}}
+
+### Delete question
+DELETE {{baseUrl}}/questions/{{questionId}}
+Authorization: Bearer {{token}}
+
+### Student Management
+
+### Get all students
+GET {{baseUrl}}/students
+Authorization: Bearer {{token}}
+
+### Get student stats
+GET {{baseUrl}}/students/stats
+Authorization: Bearer {{token}}
+
+### Create student
+POST {{baseUrl}}/students
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "firstName": "Alice",
+  "lastName": "Johnson",
+  "email": "alice.johnson@student.com",
+  "phone": "+1234567892",
+  "dateOfBirth": "2006-05-15",
+  "school": "Central High School",
+  "grade": "12"
+}
+
+### Update student
+PATCH {{baseUrl}}/students/{{studentId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "firstName": "Alice",
+  "lastName": "Johnson-Smith",
+  "phone": "+1234567893"
+}
+
+### Resend credentials
+POST {{baseUrl}}/students/{{studentId}}/resend-credentials
+Authorization: Bearer {{token}}
+
+### Delete student
+DELETE {{baseUrl}}/students/{{studentId}}
+Authorization: Bearer {{token}}
+
+### Exam Attempts (Student)
+
+### Start exam attempt
+POST {{baseUrl}}/attempts
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "examId": "{{examId}}"
+}
+
+### Get student attempts
+GET {{baseUrl}}/attempts
+Authorization: Bearer {{token}}
+
+### Get current attempt for exam
+GET {{baseUrl}}/attempts/current/{{examId}}
+Authorization: Bearer {{token}}
+
+### Pause attempt
+PATCH {{baseUrl}}/attempts/{{attemptId}}/pause
+Authorization: Bearer {{token}}
+
+### Resume attempt
+PATCH {{baseUrl}}/attempts/{{attemptId}}/resume
+Authorization: Bearer {{token}}
+
+### Submit attempt
+PATCH {{baseUrl}}/attempts/{{attemptId}}/submit
+Authorization: Bearer {{token}}
+
+### Check time remaining
+GET {{baseUrl}}/attempts/{{attemptId}}/time-remaining
+Authorization: Bearer {{token}}
+
+### Answer Management
+
+### Submit answer
+POST {{baseUrl}}/answers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "questionId": "{{questionId}}",
+  "attemptId": "{{attemptId}}",
+  "answerText": "My answer text",
+  "selectedOptions": ["option1", "option2"]
+}
+
+### Get answers for attempt
+GET {{baseUrl}}/answers/attempt/{{attemptId}}
+Authorization: Bearer {{token}}
+
+### Get unanswered questions
+GET {{baseUrl}}/answers/attempt/{{attemptId}}/unanswered
+Authorization: Bearer {{token}}
+
+### Update answer
+PATCH {{baseUrl}}/answers/{{answerId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "answerText": "Updated answer text"
+}
+
+### Delete answer
+DELETE {{baseUrl}}/answers/{{answerId}}
+Authorization: Bearer {{token}}
+
+### Results Management
+
+### Generate result
+POST {{baseUrl}}/results/generate/{{attemptId}}
+Authorization: Bearer {{token}}
+
+### Get exam results
+GET {{baseUrl}}/results/exam/{{examId}}
+Authorization: Bearer {{token}}
+
+### Get student results
+GET {{baseUrl}}/results/student
+Authorization: Bearer {{token}}
+
+### Get exam stats
+GET {{baseUrl}}/results/exam/{{examId}}/stats
+Authorization: Bearer {{token}}
+
+### Publish result
+PATCH {{baseUrl}}/results/{{resultId}}/publish
+Authorization: Bearer {{token}}
+
+### AI Grader
+
+### Grade single answer
+POST {{baseUrl}}/ai-grader/grade
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "correctAnswerText": "The correct answer is 2x",
+  "studentAnswerText": "The derivative is 2x",
+  "totalMarks": 5,
+  "questionType": "short_answer"
+}
+
+### Grade multiple answers
+POST {{baseUrl}}/ai-grader/grade-multiple
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "requests": [
+    {
+      "correctAnswerText": "Answer 1",
+      "studentAnswerText": "Student answer 1",
+      "totalMarks": 5
+    },
+    {
+      "correctAnswerText": "Answer 2",
+      "studentAnswerText": "Student answer 2",
+      "totalMarks": 3
+    }
+  ]
+}
+
+### Check AI grader status
+GET {{baseUrl}}/ai-grader/status
+Authorization: Bearer {{token}}
+
+### Health Check
+GET {{baseUrl}}/health
